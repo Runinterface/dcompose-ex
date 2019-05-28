@@ -41,7 +41,7 @@ services:
 #    volumes: 
 #     - "/Users/runinterface/Desktop/appsettings.json:/app/appsettings.json"
     ports:
-     - "7001:80"
+     - "7000:80"
     depends_on:
      - mssql
     restart: always
