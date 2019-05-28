@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
     ports:
      - "8080:8080"
+    restart: always
   mssql:
     image: "mcr.microsoft.com/mssql/server:latest"
 #Нужно указать путь до существующей папки с mssql
@@ -17,6 +18,8 @@ services:
     - SA_PASSWORD=yourStrong(!)Password
     ports:
      - "1434:1433"
+    restart: always
+
   cil-core:
     build: 
       context: ../Cil-core/
@@ -24,6 +27,7 @@ services:
     ports:
      - "8222:8222"
      - "8223:8223"
+    restart: always
 # Нужно указать путь до существующей папки с данными от leveldb
 #    volumes: 
 #     - "/path/to/leveldb_prod:/app/db"
@@ -40,3 +44,4 @@ services:
      - "7001:80"
     depends_on:
      - mssql
+    restart: always
