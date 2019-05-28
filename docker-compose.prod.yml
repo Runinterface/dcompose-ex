@@ -1,12 +1,11 @@
 version: '3.3'
 
 services:
-  nginx:
+  webserver:
     image: "nginx:latest"
 #Нужно указать путь до nginx config
 #    volumes: 
 #     - "/path/to/nginx_conf:/etc/nginx/"
-    environment:
     ports:
      - "80:80"
      - "443:443"

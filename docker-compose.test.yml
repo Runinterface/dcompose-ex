@@ -1,12 +1,11 @@
 version: '3.3'
 
 services:
-  nginx:
+  webserver:
     image: "nginx:latest"
 #Нужно указать путь до nginx config
 #    volumes: 
 #     - "/path/to/nginx_conf:/etc/nginx/"
-    environment:
     ports:
      - "80:80"
      - "443:443"
@@ -33,9 +32,6 @@ services:
     build: 
       context: ../Cil-core/
       dockerfile: Dockerfile.test
-# Нужно указать путь до существующей папки с данными от leveldb
-#    volumes: 
-#     - "/path/to/sqlserver.config.json:/app/config/sqlserver.config.json"
     environment:
     - NODE_ENV=Devel
     - DEBUG=node:app, node:messages, node:messages:full
@@ -45,9 +41,7 @@ services:
     restart: always
 # Нужно указать путь до существующей папки с данными от leveldb
 #    volumes: 
-#     - "/path/to/leveldb_test:/app/db"
-    depends_on:
-     - mssql
+#     - "/Users/runinterface/Desktop/leveldb_test:/app/db"
   cil-storage:
     build: 
       context: ../Cil-Storage/
