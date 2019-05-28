@@ -28,7 +28,6 @@ services:
     ports:
      - "1434:1433"
     restart: always
-
   cil-core:
     build: 
       context: ../Cil-core/
