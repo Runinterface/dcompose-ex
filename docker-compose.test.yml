@@ -7,25 +7,44 @@ services:
       dockerfile: Dockerfile.test
     ports:
      - "8081:8080"
+  mssql:
+    image: "mcr.microsoft.com/mssql/server:latest"
+#Нужно указать путь до существующей папки с mssql
+#    volumes: 
+#     - "/path/to/mssqldb_test:/var/opt/mssql"
+    environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=yourStrong(!)Password
+    ports:
+     - "1433:1433"
   cil-core:
     build: 
       context: ../Cil-core/
       dockerfile: Dockerfile.test
+# Нужно указать путь до существующей папки с данными от leveldb
+#    volumes: 
+#     - "/path/to/sqlserver.config.json:/app/config/sqlserver.config.json"
     environment:
     - NODE_ENV=Devel
     - DEBUG=node:app, node:messages, node:messages:full
     ports:
      - "18222:18222"
      - "18223:18223"
-    volumes: 
-     - "/Users/runinterface/Desktop:/app/db"
+# Нужно указать путь до существующей папки с данными от leveldb
+#    volumes: 
+#     - "/path/to/leveldb_test:/app/db"
     depends_on:
      - mssql
-  mssql:
-    image: "mcr.microsoft.com/mssql/server:latest"
-    environment:
-    - ACCEPT_EULA=Y
-    - SA_PASSWORD=yourStrong(!)Password
+  cil-storage:
+    build: 
+      context: ../Cil-Storage/
+      dockerfile: Dockerfile.test
+# Нужно указать путь до рабочего appsettings.json
+#    volumes: 
+#     - "/path/to/appsettings.json:/app/appsettings.json"
     ports:
-     - "1433:1433"
+     - "7001:80"
+    depends_on:
+     - mssql
+
 

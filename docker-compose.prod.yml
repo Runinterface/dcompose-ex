@@ -7,6 +7,16 @@ services:
       dockerfile: Dockerfile
     ports:
      - "8080:8080"
+  mssql:
+    image: "mcr.microsoft.com/mssql/server:latest"
+#Нужно указать путь до существующей папки с mssql
+#    volumes: 
+#     - "/path/to/mssqldb_prod:/var/opt/mssql"
+    environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=yourStrong(!)Password
+    ports:
+     - "1434:1433"
   cil-core:
     build: 
       context: ../Cil-core/
@@ -14,14 +24,19 @@ services:
     ports:
      - "8222:8222"
      - "8223:8223"
-    volumes: 
-     - "/Users/runinterface/Desktop:/app/db"
+# Нужно указать путь до существующей папки с данными от leveldb
+#    volumes: 
+#     - "/path/to/leveldb_prod:/app/db"
     depends_on:
      - mssql
-  mssql:
-    image: "mcr.microsoft.com/mssql/server:latest"
-    environment:
-    - ACCEPT_EULA=Y
-    - SA_PASSWORD=yourStrong(!)Password
+  cil-storage:
+    build: 
+    context: ../Cil-Storage/
+    dockerfile: Dockerfile.test
+# Нужно указать путь до рабочего appsettings.json
+#    volumes: 
+#     - "/Users/runinterface/Desktop/appsettings.json:/app/appsettings.json"
     ports:
-     - "1434:1433"
+     - "7001:80"
+    depends_on:
+     - mssql
