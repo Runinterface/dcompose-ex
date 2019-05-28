@@ -7,3 +7,13 @@ services:
       dockerfile: Dockerfile
     ports:
      - "8080:8080"
+  cil-core:
+    build: 
+      context: ../Cil-core/
+      dockerfile: Dockerfile
+    ports:
+     - "8222:8222"
+     - "8223:8223"
+    volumes: 
+     - "/Users/runinterface/Desktop:/app/db"
+

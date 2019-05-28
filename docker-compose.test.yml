@@ -7,3 +7,16 @@ services:
       dockerfile: Dockerfile.test
     ports:
      - "8081:8080"
+  cil-core:
+    build: 
+      context: ../Cil-core/
+      dockerfile: Dockerfile.test
+    environment:
+    - NODE_ENV=Devel
+    - DEBUG=node:app, node:messages, node:messages:full
+    ports:
+     - "18222:18222"
+     - "18223:18223"
+    volumes: 
+     - "/Users/runinterface/Desktop:/app/db"
+
