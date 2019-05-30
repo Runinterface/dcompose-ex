@@ -2,33 +2,31 @@ version: '3.3'
 
 services:
   webserver:
-    image: "nginx:latest"
-#Нужно указать путь до nginx config
-#    volumes: 
-#     - "/path/to/nginx_conf:/etc/nginx/"
+    build: 
+      context: ../SilentNotary-CilExplorer/
+      dockerfile: Dockerfile
+    volumes: 
+     - "../ubikiri-certs/:/etc/nginx/certs"
     ports:
      - "80:80"
      - "443:443"
     restart: always
-  web: 
+  mssql-test:
     build: 
-      context: ../SilentNotary-CilExplorer/
-      dockerfile: Dockerfile.test
-    ports:
-     - "8081:8080"
-    restart: always
-  mssql:
-    image: "mcr.microsoft.com/mssql/server:latest"
+      context: ../sql-server/
+      dockerfile: Dockerfile
+
 #Нужно указать путь до существующей папки с mssql
 #    volumes: 
-#     - "/path/to/mssqldb_test:/var/opt/mssql"
+#     - "../mssqlDb/test:/var/opt/mssql"
     environment:
     - ACCEPT_EULA=Y
-    - SA_PASSWORD=yourStrong(!)Password
+    - SA_PASSWORD=BhggG1z900
     ports:
-     - "1433:1433"
+     - "1434:1433"
     restart: always
-  cil-core:
+    container_name: app_cil-webserver_1
+  cil-core-test:
     build: 
       context: ../Cil-core/
       dockerfile: Dockerfile.test
@@ -38,22 +36,17 @@ services:
     ports:
      - "18222:18222"
      - "18223:18223"
+    depends_on:
+     - mssql-test
     restart: always
-# Нужно указать путь до существующей папки с данными от leveldb
 #    volumes: 
-#     - "/Users/runinterface/Desktop/leveldb_test:/app/db"
-  cil-storage:
+#     - "../levelDb/test:/app/db"
+  cil-storage-test:
     build: 
       context: ../Cil-Storage/
       dockerfile: Dockerfile.test
-# Нужно указать путь до рабочего appsettings.json
-#    volumes: 
-#     - "/path/to/appsettings.json:/app/appsettings.json"
-    ports:
-     - "7001:80"
+#    ports:
+#     - "7001:80"
     depends_on:
-     - mssql
+     - mssql-test
     restart: always
-
-
-
